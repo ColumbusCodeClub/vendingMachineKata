@@ -5,7 +5,8 @@ public class CoinCalculatorImpl implements CoinCalculator {
 
 	@Override
 	public void insertCoin(double coinAmount) {
-		totalAmount += coinAmount;
+		if (coinAmount != 0.01)
+			totalAmount += coinAmount;
 	}
 
 	@Override
