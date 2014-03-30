@@ -12,9 +12,15 @@ public class VendingMachine {
 	ArrayList<String> itemBinList = new ArrayList<String>();
 	ArrayList<String> coinList = new ArrayList<String>();
 	private CoinCalculator coinCalc;
+	private VendItem soda;
+	private VendItem chips;
+	private VendItem candy;
 
 	public VendingMachine() {
 		coinCalc = new CoinCalculatorImpl();
+		soda = new Soda();
+		chips = new Chips();
+		candy = new Candy();
 	}
 
 	public ArrayList<String> returnCoins() {
@@ -52,24 +58,18 @@ public class VendingMachine {
 	}
 
 	public void sodaButton() {
-		if (getCurrentAmount() >= 1.25) {
-			updateChangeAmount();
-			itemBinList.add("Soda");
-		}
+		itemBinList = soda.vend(itemBinList, getCurrentAmount());
+		updateChangeAmount();
 	}
 
 	public void chipsButton() {
-		if (getCurrentAmount() >= 0.75) {
-			updateChangeAmount();
-			itemBinList.add("Chips");
-		}
+		itemBinList = chips.vend(itemBinList, getCurrentAmount());
+		updateChangeAmount();
 	}
 
 	public void candyButton() {
-		if (getCurrentAmount() >= 0.50) {
-			updateChangeAmount();
-			itemBinList.add("Candy");
-		}
+		itemBinList = candy.vend(itemBinList, getCurrentAmount());
+		updateChangeAmount();
 	}
 
 	public void updateDisplay() {
