@@ -7,105 +7,105 @@ public class VendingMachine {
 
 	Double currentAmount = 0.0;
 	Double coinReturnAmount = 0.0;
-	ArrayList<Double> coinsList = new ArrayList<Double>();
-	ArrayList<Double> returnSlotCoins = new ArrayList<Double>();
+	ArrayList<String> returnSlotCoins = new ArrayList<String>();
 	String display = "";
 	ArrayList<String> itemBinList = new ArrayList<String>();
-	
+	ArrayList<String> coinList = new ArrayList<String>();
+	private CoinCalculator coinCalc;
 
-	public ArrayList<Double> returnCoins() {
-		setCoinReturnAmount(getCurrentAmount());	
+	public VendingMachine() {
+		coinCalc = new CoinCalculatorImpl();
+	}
+
+	public ArrayList<String> returnCoins() {
+		setCoinReturnAmount(getCurrentAmount());
 		setCurrentAmount(0.00);
-		
-		returnSlotCoins.addAll(coinsList);		
-		return coinsList;
+
+		returnSlotCoins.addAll(coinList);
+		return coinList;
 	}
 
-	public void insertPenny() {
-		setCoinReturnAmount(0.01);
-		
-		returnSlotCoins.add((Double)0.01);
+	public void insertCoin(String coin, double coinAmount) {
+		if (coinIsPenny(coin)) {
+			pennyFallsToReturnSlot(coin, coinAmount);
+		} else {
+			coinAdded(coin, coinAmount);
+		}
 	}
 
-	public void insertNickel() {
-		setCurrentAmount(getCurrentAmount() + 0.05);
-		updateDisplay();
-        
-		coinsList.add((Double)0.05);		
+	private void coinAdded(String coin, double coinAmount) {
+		coinList.add(coin);
+		coinCalc.insertCoin(coinAmount);
 	}
 
-	public void insertDime() {
-		setCurrentAmount(getCurrentAmount() + 0.10);
-		updateDisplay();		
-		
-		coinsList.add((Double)0.10);		
-	}	
-
-	public void insertQuarter() {
-		setCurrentAmount(getCurrentAmount() + 0.25);
-		updateDisplay();
-		
-		coinsList.add((Double)0.25);
+	private void pennyFallsToReturnSlot(String coin, double coinAmount) {
+		returnSlotCoins.add(coin);
+		setCoinReturnAmount(coinAmount);
 	}
-	
+
+	private boolean coinIsPenny(String coin) {
+		return coin.equals("Penny");
+	}
+
+	public void calculateCurrentAmount() {
+		setCurrentAmount(coinCalc.calcTotalAmount());
+	}
+
 	public void sodaButton() {
-		if (getCurrentAmount() >= 1.25){
+		if (getCurrentAmount() >= 1.25) {
 			updateChangeAmount();
 			itemBinList.add("Soda");
 		}
 	}
 
-
 	public void chipsButton() {
-		if (getCurrentAmount() >= 0.75){
-			updateChangeAmount();			
+		if (getCurrentAmount() >= 0.75) {
+			updateChangeAmount();
 			itemBinList.add("Chips");
 		}
 	}
-	
+
 	public void candyButton() {
-		if (getCurrentAmount() >= 0.50){
-			updateChangeAmount();			
+		if (getCurrentAmount() >= 0.50) {
+			updateChangeAmount();
 			itemBinList.add("Candy");
 		}
 	}
-	
-	// Helper Methods
-	private void updateDisplay() {
-		NumberFormat nf = NumberFormat.getInstance();  
-		nf.setMinimumFractionDigits(2);  
-		String stringConversion = nf.format(getCurrentAmount()); 		
+
+	public void updateDisplay() {
+		NumberFormat nf = NumberFormat.getInstance();
+		nf.setMinimumFractionDigits(2);
+		String stringConversion = nf.format(getCurrentAmount());
 		setDisplay("$" + stringConversion);
 	}
+
 	private void updateChangeAmount() {
 		if (getCurrentAmount() >= 1.25) {
 			setCurrentAmount(getCurrentAmount() - 1.25);
 		}
 	}
-	
-	//Getters / Setters
-	
+
 	public Double getCoinReturnAmount() {
 		return coinReturnAmount;
 	}
-	
+
 	public void setCoinReturnAmount(Double coinReturnAmount) {
 		this.coinReturnAmount = coinReturnAmount;
 	}
-	
+
 	public Double getCurrentAmount() {
 		return currentAmount;
 	}
-	
+
 	public void setCurrentAmount(Double currentAmount) {
 		this.currentAmount = currentAmount;
 	}
 
-	public ArrayList<Double> getReturnSlotCoins() {
+	public ArrayList<String> getReturnSlotCoins() {
 		return returnSlotCoins;
 	}
 
-	public void setReturnSlotCoins(ArrayList<Double> returnSlotCoins) {
+	public void setReturnSlotCoins(ArrayList<String> returnSlotCoins) {
 		this.returnSlotCoins = returnSlotCoins;
 	}
 
@@ -124,7 +124,5 @@ public class VendingMachine {
 	public void setItemBinList(ArrayList<String> itemBinList) {
 		this.itemBinList = itemBinList;
 	}
-
-
 
 }
