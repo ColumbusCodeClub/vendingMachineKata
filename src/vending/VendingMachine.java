@@ -7,45 +7,51 @@ public class VendingMachine {
 
 	Double currentAmount = 0.0;
 	Double coinReturnAmount = 0.0;
-	ArrayList<Double> coinsList = new ArrayList<Double>();
-	ArrayList<Double> returnSlotCoins = new ArrayList<Double>();
+	ArrayList<String> returnSlotCoins = new ArrayList<String>();
 	String display = "";
 	ArrayList<String> itemBinList = new ArrayList<String>();
-	
+	ArrayList<String> coinList = new ArrayList<String>();
+	private CoinCalculator coinCalc;
 
-	public ArrayList<Double> returnCoins() {
+	public VendingMachine() {
+		coinCalc = new CoinCalculatorImpl();
+	}
+	
+	public ArrayList<String> returnCoins() {
 		setCoinReturnAmount(getCurrentAmount());	
 		setCurrentAmount(0.00);
 		
-		returnSlotCoins.addAll(coinsList);		
-		return coinsList;
+		returnSlotCoins.addAll(coinList);		
+		return coinList;
 	}
 
+	public void insertCoin(String coin, double coinAmount) {
+		coinList.add(coin);
+		coinCalc.insertCoin(coinAmount);
+	}
+	
 	public void insertPenny() {
 		setCoinReturnAmount(0.01);
 		
-		returnSlotCoins.add((Double)0.01);
+		coinList.add("Penny");		
 	}
 
 	public void insertNickel() {
-		setCurrentAmount(getCurrentAmount() + 0.05);
+		calculateCurrentAmount();
 		updateDisplay();
         
-		coinsList.add((Double)0.05);		
+		coinList.add("Nickle");		
 	}
 
-	public void insertDime() {
-		setCurrentAmount(getCurrentAmount() + 0.10);
-		updateDisplay();		
-		
-		coinsList.add((Double)0.10);		
-	}	
+	public void calculateCurrentAmount() {
+		setCurrentAmount(coinCalc.calcTotalAmount());
+	}
 
 	public void insertQuarter() {
 		setCurrentAmount(getCurrentAmount() + 0.25);
 		updateDisplay();
 		
-		coinsList.add((Double)0.25);
+		coinList.add("Quarter");
 	}
 	
 	public void sodaButton() {
@@ -54,7 +60,6 @@ public class VendingMachine {
 			itemBinList.add("Soda");
 		}
 	}
-
 
 	public void chipsButton() {
 		if (getCurrentAmount() >= 0.75){
@@ -71,7 +76,7 @@ public class VendingMachine {
 	}
 	
 	// Helper Methods
-	private void updateDisplay() {
+	public void updateDisplay() {
 		NumberFormat nf = NumberFormat.getInstance();  
 		nf.setMinimumFractionDigits(2);  
 		String stringConversion = nf.format(getCurrentAmount()); 		
@@ -101,11 +106,11 @@ public class VendingMachine {
 		this.currentAmount = currentAmount;
 	}
 
-	public ArrayList<Double> getReturnSlotCoins() {
+	public ArrayList<String> getReturnSlotCoins() {
 		return returnSlotCoins;
 	}
 
-	public void setReturnSlotCoins(ArrayList<Double> returnSlotCoins) {
+	public void setReturnSlotCoins(ArrayList<String> returnSlotCoins) {
 		this.returnSlotCoins = returnSlotCoins;
 	}
 
