@@ -11,13 +11,13 @@ public class VendingMachine {
 	String display = "";
 	ArrayList<String> itemBinList = new ArrayList<String>();
 	ArrayList<String> coinList = new ArrayList<String>();
-	private CoinCalculator coinCalc;
+	private VendingCalc coinCalc;
 	private VendItem soda;
 	private VendItem chips;
 	private VendItem candy;
 
 	public VendingMachine() {
-		coinCalc = new CoinCalculatorImpl();
+		coinCalc = new CoinCalculator();
 		soda = new Soda();
 		chips = new Chips();
 		candy = new Candy();
@@ -53,8 +53,9 @@ public class VendingMachine {
 		return coin.equals("Penny");
 	}
 
-	public void calculateCurrentAmount() {
+	public void update() {
 		setCurrentAmount(coinCalc.calcTotalAmount());
+		updateDisplay();
 	}
 
 	public void sodaButton() {
@@ -72,7 +73,7 @@ public class VendingMachine {
 		updateChangeAmount();
 	}
 
-	public void updateDisplay() {
+	private void updateDisplay() {
 		NumberFormat nf = NumberFormat.getInstance();
 		nf.setMinimumFractionDigits(2);
 		String stringConversion = nf.format(getCurrentAmount());

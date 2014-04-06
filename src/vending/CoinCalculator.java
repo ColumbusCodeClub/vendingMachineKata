@@ -1,7 +1,16 @@
 package vending;
 
-public interface CoinCalculator {
-	public void insertCoin(double coinAmount);
-	
-	public double calcTotalAmount();
+public class CoinCalculator implements VendingCalc {
+	private double totalAmount;
+
+	@Override
+	public void insertCoin(double coinAmount) {
+		if (coinAmount != 0.01)
+			totalAmount += coinAmount;
+	}
+
+	@Override
+	public double calcTotalAmount() {
+		return totalAmount;
+	}
 }
