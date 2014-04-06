@@ -93,15 +93,7 @@ public class VendingMachine {
 	public void setCoinReturnAmount(Double coinReturnAmount) {
 		this.coinReturnAmount = coinReturnAmount;
 	}
-
-	public Double getCurrentAmount() {
-		return currentAmount;
-	}
-
-	public void setCurrentAmount(Double currentAmount) {
-		this.currentAmount = currentAmount;
-	}
-
+	
 	public ArrayList<String> getReturnSlotCoins() {
 		return returnSlotCoins;
 	}
@@ -110,7 +102,7 @@ public class VendingMachine {
 		this.returnSlotCoins = returnSlotCoins;
 	}
 
-	public String getDisplay() {
+	public String display() {
 		return display;
 	}
 
@@ -125,5 +117,13 @@ public class VendingMachine {
 	public void setItemBinList(ArrayList<String> itemBinList) {
 		this.itemBinList = itemBinList;
 	}
+	
+	private void setCurrentAmount(Double currentAmount) {
+		this.currentAmount = currentAmount;
+	}
+
+	private Double getCurrentAmount() {
+		return currentAmount;
+	}	
 
 }
