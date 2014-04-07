@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class VendingMachineTests {
@@ -24,16 +25,6 @@ public class VendingMachineTests {
 	public void shouldAcceptQuarter() {
 		insertQuarter();
 		vendingMachine.update();
-
-		assertEquals("$0.25", vendingMachine.display());
-	}
-
-	@Test
-	public void shouldResetCurrentAmountEqualToZeroWhenReturnCoinsIsPressed() {
-		insertQuarter();
-		vendingMachine.update();
-
-		vendingMachine.returnCoins();
 
 		assertEquals("$0.25", vendingMachine.display());
 	}
@@ -64,6 +55,16 @@ public class VendingMachineTests {
 		assertEquals("$0.10", vendingMachine.display());
 	}
 
+	@Test
+	public void shouldResetCurrentAmountEqualToZeroWhenReturnCoinsIsPressed() {
+		insertQuarter();
+		vendingMachine.update();
+
+		vendingMachine.returnCoins();
+
+		assertEquals("$0.00", vendingMachine.display());
+	}	
+	
 	@Test
 	public void pressingCoinReturnShouldReturnExactCoinsInserted() {
 		insertFiftyCentsInQuarters();
@@ -217,7 +218,7 @@ public class VendingMachineTests {
 		vendingMachine.sodaButton();
 		vendingMachine.returnCoins();
 
-		assertEquals((Double) QUARTER, vendingMachine.getCoinReturnAmount());
+		assertEquals((Double) QUARTER, vendingMachine.getReturnSlotCoins());
 	}
 
 	private void insertDollarInQuarters() {
