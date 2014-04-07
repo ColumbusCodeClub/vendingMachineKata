@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class VendingMachineTests {
@@ -218,7 +217,7 @@ public class VendingMachineTests {
 		vendingMachine.sodaButton();
 		vendingMachine.returnCoins();
 
-		assertEquals((Double) QUARTER, vendingMachine.getReturnSlotCoins());
+		assertEquals((Double) QUARTER, vendingMachine.getCoinReturnAmount());
 	}
 
 	private void insertDollarInQuarters() {

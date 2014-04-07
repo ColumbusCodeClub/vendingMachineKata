@@ -29,6 +29,7 @@ public class VendingMachine {
 	}
 
 	public ArrayList<String> returnCoins() {
+		setCoinReturnAmount(currentAmount);
 		returnSlotCoins.addAll(coinList);
 		coinList.removeAll(coinList);
 		setCurrentAmount(0.00);
@@ -94,16 +95,13 @@ public class VendingMachine {
 	private void updateChangeAmount() {
 		if (currentAmount >= 1.25) {
 			setCurrentAmount(currentAmount - 1.25);
-			coinList.remove(0);
-			coinList.remove(1);
-			coinList.remove(2);
 		}
 	}
 
 	private void setCoinReturnAmount(Double coinReturnAmount) {
 		this.coinReturnAmount = coinReturnAmount;
 	}	
-
+	
 	private void coinAdded(String coin, double coinAmount) {
 		coinList.add(coin);
 		coinCalc.insertCoin(coinAmount);
