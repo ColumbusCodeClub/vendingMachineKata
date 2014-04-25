@@ -9,92 +9,91 @@ public class VendingMachine {
 	ArrayList<Double> returnSlotCoins = new ArrayList<Double>();
 	String display = "";
 	ArrayList<String> itemBinList = new ArrayList<String>();
-	
 
 	public ArrayList<Double> returnCoins() {
-		setCoinReturnAmount(getCurrentAmount());	
+		setCoinReturnAmount(getCurrentAmount());
 		setCurrentAmount(0.00);
-		
-		returnSlotCoins.addAll(coinsList);		
+
+		returnSlotCoins.addAll(coinsList);
 		return coinsList;
 	}
 
 	public void insertPenny() {
 		setCoinReturnAmount(0.01);
-		
-		returnSlotCoins.add((Double)0.01);
+
+		returnSlotCoins.add((Double) 0.01);
 	}
 
 	public void insertNickel() {
 		setCurrentAmount(getCurrentAmount() + 0.05);
 		updateDisplay();
-        
-		coinsList.add((Double)0.05);		
+
+		coinsList.add((Double) 0.05);
 	}
 
 	public void insertDime() {
 		setCurrentAmount(getCurrentAmount() + 0.10);
-		updateDisplay();		
-		
-		coinsList.add((Double)0.10);		
-	}	
+		updateDisplay();
+
+		coinsList.add((Double) 0.10);
+	}
 
 	public void insertQuarter() {
 		setCurrentAmount(getCurrentAmount() + 0.25);
 		updateDisplay();
-		
-		coinsList.add((Double)0.25);
+
+		coinsList.add((Double) 0.25);
 	}
-	
+
 	public void sodaButton() {
-		if (getCurrentAmount() >= 1.25){
+		if (getCurrentAmount() >= 1.25) {
 			updateChangeAmount();
 			itemBinList.add("Soda");
 		}
 	}
 
-
 	public void chipsButton() {
-		if (getCurrentAmount() >= 0.75){
-			updateChangeAmount();			
+		if (getCurrentAmount() >= 0.75) {
+			updateChangeAmount();
 			itemBinList.add("Chips");
 		}
 	}
-	
+
 	public void candyButton() {
-		if (getCurrentAmount() >= 0.50){
-			updateChangeAmount();			
+		if (getCurrentAmount() >= 0.50) {
+			updateChangeAmount();
 			itemBinList.add("Candy");
 		}
 	}
-	
+
 	// Helper Methods
 	private void updateDisplay() {
-		NumberFormat nf = NumberFormat.getInstance();  
-		nf.setMinimumFractionDigits(2);  
-		String stringConversion = nf.format(getCurrentAmount()); 		
+		NumberFormat nf = NumberFormat.getInstance();
+		nf.setMinimumFractionDigits(2);
+		String stringConversion = nf.format(getCurrentAmount());
 		setDisplay("$" + stringConversion);
 	}
+
 	private void updateChangeAmount() {
 		if (getCurrentAmount() >= 1.25) {
 			setCurrentAmount(getCurrentAmount() - 1.25);
 		}
 	}
-	
-	//Getters / Setters
-	
+
+	// Getters / Setters
+
 	public Double getCoinReturnAmount() {
 		return coinReturnAmount;
 	}
-	
+
 	public void setCoinReturnAmount(Double coinReturnAmount) {
 		this.coinReturnAmount = coinReturnAmount;
 	}
-	
+
 	public Double getCurrentAmount() {
 		return currentAmount;
 	}
-	
+
 	public void setCurrentAmount(Double currentAmount) {
 		this.currentAmount = currentAmount;
 	}
@@ -123,6 +122,21 @@ public class VendingMachine {
 		this.itemBinList = itemBinList;
 	}
 
+	public void insert(Coin coin) {
+		switch (coin) {
+		case QUARTER:
+			insertQuarter();
+			break;
+		case DIME:
+			insertDime();
+			break;
+		case PENNY:
+			insertPenny();
+			break;
+		default:
+			insertNickel();
+		}
 
+	}
 
 }
