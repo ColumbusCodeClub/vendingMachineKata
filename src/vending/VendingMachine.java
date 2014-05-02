@@ -5,12 +5,12 @@ public class VendingMachine {
 
 	Double currentAmount = 0.0;
 	Double coinReturnAmount = 0.0;
-	ArrayList<Double> coinsList = new ArrayList<Double>();
-	ArrayList<Double> returnSlotCoins = new ArrayList<Double>();
+	ArrayList<Coin> coinsList = new ArrayList<Coin>();
+	ArrayList<Coin> returnSlotCoins = new ArrayList<Coin>();
 	String display = "";
 	ArrayList<String> itemBinList = new ArrayList<String>();
 
-	public ArrayList<Double> returnCoins() {
+	public ArrayList<Coin> returnCoins() {
 		setCoinReturnAmount(getCurrentAmount());
 		setCurrentAmount(0.00);
 
@@ -21,28 +21,7 @@ public class VendingMachine {
 	public void insertPenny() {
 		setCoinReturnAmount(0.01);
 
-		returnSlotCoins.add((Double) 0.01);
-	}
-
-	public void insertNickel() {
-		setCurrentAmount(getCurrentAmount() + 0.05);
-		updateDisplay();
-
-		coinsList.add((Double) 0.05);
-	}
-
-	public void insertDime() {
-		setCurrentAmount(getCurrentAmount() + 0.10);
-		updateDisplay();
-
-		coinsList.add((Double) 0.10);
-	}
-
-	public void insertQuarter() {
-		setCurrentAmount(getCurrentAmount() + 0.25);
-		updateDisplay();
-
-		coinsList.add((Double) 0.25);
+		returnSlotCoins.add(Coin.PENNY);
 	}
 
 	public void sodaButton() {
@@ -98,11 +77,11 @@ public class VendingMachine {
 		this.currentAmount = currentAmount;
 	}
 
-	public ArrayList<Double> getReturnSlotCoins() {
+	public ArrayList<Coin> getReturnSlotCoins() {
 		return returnSlotCoins;
 	}
 
-	public void setReturnSlotCoins(ArrayList<Double> returnSlotCoins) {
+	public void setReturnSlotCoins(ArrayList<Coin> returnSlotCoins) {
 		this.returnSlotCoins = returnSlotCoins;
 	}
 
@@ -123,20 +102,19 @@ public class VendingMachine {
 	}
 
 	public void insert(Coin coin) {
-		switch (coin) {
-		case QUARTER:
-			insertQuarter();
-			break;
-		case DIME:
-			insertDime();
-			break;
-		case PENNY:
+		if (isValidCoin(coin)) {
+			setCurrentAmount(getCurrentAmount() + coin.getValue());
+			coinsList.add(coin);
+			updateDisplay();
+		} else {
 			insertPenny();
-			break;
-		default:
-			insertNickel();
+			return;
 		}
 
+	}
+
+	private boolean isValidCoin(Coin coin) {
+		return !Coin.PENNY.equals(coin);
 	}
 
 }
