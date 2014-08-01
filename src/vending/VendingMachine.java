@@ -9,6 +9,11 @@ public class VendingMachine {
 	ArrayList<Coin> returnSlotCoins = new ArrayList<Coin>();
 	String display = "";
 	ArrayList<String> itemBinList = new ArrayList<String>();
+	CurrencyHandler currencyHandler;
+
+	public VendingMachine(CurrencyHandler currencyHandler) {
+		this.currencyHandler = currencyHandler;
+	}
 
 	public ArrayList<Coin> returnCoins() {
 		setCoinReturnAmount(getCurrentAmount());
@@ -70,11 +75,11 @@ public class VendingMachine {
 	}
 
 	public Double getCurrentAmount() {
-		return currentAmount;
+		return currencyHandler.getCurrentAmount();
 	}
 
 	public void setCurrentAmount(Double currentAmount) {
-		this.currentAmount = currentAmount;
+		currencyHandler.setCurrentAmount(currentAmount);
 	}
 
 	public ArrayList<Coin> getReturnSlotCoins() {
@@ -102,6 +107,7 @@ public class VendingMachine {
 	}
 
 	public void insert(Coin coin) {
+		this.currencyHandler.insert(coin);
 		if (isValidCoin(coin)) {
 			setCurrentAmount(getCurrentAmount() + coin.getValue());
 			coinsList.add(coin);

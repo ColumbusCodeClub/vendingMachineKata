@@ -11,77 +11,79 @@ public class VendingMachineTest {
 
 	private static final Double NO_COIN = (Double) 0.0;
 	
-	private VendingMachine vendingMachine;
+	private VendingMachine underTest;
 
+	private CurrencyHandlerStub currencyHandlerStub;
 	@Before
 	public void setUp() {
-		vendingMachine = new VendingMachine();
+		 currencyHandlerStub = new CurrencyHandlerStub();
+		underTest = new VendingMachine(currencyHandlerStub);
 	}
 
 	@Test
 	public void shouldAcceptQuarter() {
 		
-		vendingMachine.insert(Coin.QUARTER);
+		underTest.insert(Coin.QUARTER);
 
-		assertEquals(Coin.QUARTER.getValue(), vendingMachine.getCurrentAmount());
+		assertEquals(Coin.QUARTER.getValue(), underTest.getCurrentAmount());
 	}
 
 	@Test
 	public void shouldResetCurrentAmountEqualToZeroWhenReturnCoinsIsPressed() {
 		
-		vendingMachine.setCurrentAmount(Coin.QUARTER.getValue());
+		underTest.setCurrentAmount(Coin.QUARTER.getValue());
 
-		vendingMachine.returnCoins();
+		underTest.returnCoins();
 
-		assertEquals(NO_COIN, vendingMachine.getCurrentAmount());
+		assertEquals(NO_COIN, underTest.getCurrentAmount());
 	}
 
 	@Test
 	public void pennyShouldGoToCoinReturn() {
-		vendingMachine.insert(Coin.PENNY);
+		underTest.insert(Coin.PENNY);
 
-		assertEquals(Coin.PENNY.getValue(), vendingMachine.getCoinReturnAmount());
+		assertEquals(Coin.PENNY.getValue(), underTest.getCoinReturnAmount());
 	}
 
 	@Test
 	public void shouldNotAddPennyToCurrentValue() {
-		vendingMachine.insert(Coin.PENNY);
+		underTest.insert(Coin.PENNY);
 		
-		assertEquals(NO_COIN, vendingMachine.getCurrentAmount());
+		assertEquals(NO_COIN, underTest.getCurrentAmount());
 	}
 	
 	@Test
 	public void shouldAcceptNickel() {
-		vendingMachine.insert(Coin.NICKEL);
+		underTest.insert(Coin.NICKEL);
 
-		assertEquals(Coin.NICKEL.getValue(), vendingMachine.getCurrentAmount());
+		assertEquals(Coin.NICKEL.getValue(), underTest.getCurrentAmount());
 	}
 
 	@Test
 	public void shouldAcceptDime() {
-		vendingMachine.insert(Coin.DIME);
+		underTest.insert(Coin.DIME);
 
-		assertEquals(Coin.DIME.getValue(), vendingMachine.getCurrentAmount());
+		assertEquals(Coin.DIME.getValue(), underTest.getCurrentAmount());
 	}
 
 	@Test
 	public void pressingCoinReturnShouldReturnExactCoinsInserted() {
 		insertFiftyCentsInQuarters();
-		vendingMachine.insert(Coin.NICKEL);
+		underTest.insert(Coin.NICKEL);
 
 		List<Coin> expectedCoinList = new ArrayList<Coin>();
 		expectedCoinList.add(Coin.QUARTER);
 		expectedCoinList.add(Coin.QUARTER);
 		expectedCoinList.add(Coin.NICKEL);
 
-		assertEquals(expectedCoinList, vendingMachine.returnCoins());
+		assertEquals(expectedCoinList, underTest.returnCoins());
 	}
 
 	@Test
 	public void returnCoinSlotShouldHoldAllCoinsReturned() {
-		vendingMachine.insertPenny();
+		underTest.insertPenny();
 		insertFiftyCentsInQuarters();
-		vendingMachine.insert(Coin.NICKEL);
+		underTest.insert(Coin.NICKEL);
 
 		List<Coin> expectedCoinList = new ArrayList<Coin>();
 		expectedCoinList.add(Coin.PENNY);
@@ -89,28 +91,28 @@ public class VendingMachineTest {
 		expectedCoinList.add(Coin.QUARTER);
 		expectedCoinList.add(Coin.NICKEL);
 
-		vendingMachine.returnCoins();
+		underTest.returnCoins();
 
-		assertEquals(expectedCoinList, vendingMachine.getReturnSlotCoins());
+		assertEquals(expectedCoinList, underTest.getReturnSlotCoins());
 	}
 
 	@Test
 	public void currentAmountShouldContinueToSumAllChangePutInMachine() {
-		vendingMachine.insertPenny();
+		underTest.insertPenny();
 		insertFiftyCentsInQuarters();
-		vendingMachine.insert(Coin.NICKEL);
+		underTest.insert(Coin.NICKEL);
 
-		assertEquals((Double) 0.55, vendingMachine.getCurrentAmount());
+		assertEquals((Double) 0.55, underTest.getCurrentAmount());
 	}
 
 	@Test
 	public void displayShouldShowAmountOfCurrencyInsertedIntoMachine() {
 		insertDollarInQuarters();
-		vendingMachine.insert(Coin.DIME);
-		vendingMachine.insert(Coin.DIME);
-		vendingMachine.insert(Coin.NICKEL);
+		underTest.insert(Coin.DIME);
+		underTest.insert(Coin.DIME);
+		underTest.insert(Coin.NICKEL);
 
-		assertEquals("$1.25", vendingMachine.getDisplay());
+		assertEquals("$1.25", underTest.getDisplay());
 	}
 
 	@Test
@@ -121,9 +123,9 @@ public class VendingMachineTest {
 		ArrayList<String> expectedItemBinList = new ArrayList<String>();
 		expectedItemBinList.add("Soda");
 
-		vendingMachine.sodaButton();
+		underTest.sodaButton();
 
-		assertEquals(expectedItemBinList, vendingMachine.getItemBinList());
+		assertEquals(expectedItemBinList, underTest.getItemBinList());
 	}
 
 	@Test
@@ -132,9 +134,9 @@ public class VendingMachineTest {
 
 		ArrayList<String> expectedItemBinList = new ArrayList<String>();
 
-		vendingMachine.sodaButton();
+		underTest.sodaButton();
 
-		assertEquals(expectedItemBinList, vendingMachine.getItemBinList());
+		assertEquals(expectedItemBinList, underTest.getItemBinList());
 	}
 
 	@Test
@@ -144,9 +146,9 @@ public class VendingMachineTest {
 		ArrayList<String> expectedItemBinList = new ArrayList<String>();
 		expectedItemBinList.add("Chips");
 
-		vendingMachine.chipsButton();
+		underTest.chipsButton();
 
-		assertEquals(expectedItemBinList, vendingMachine.getItemBinList());
+		assertEquals(expectedItemBinList, underTest.getItemBinList());
 	}
 
 	@Test
@@ -155,9 +157,9 @@ public class VendingMachineTest {
 
 		ArrayList<String> expectedItemBinList = new ArrayList<String>();
 
-		vendingMachine.chipsButton();
+		underTest.chipsButton();
 
-		assertEquals(expectedItemBinList, vendingMachine.getItemBinList());
+		assertEquals(expectedItemBinList, underTest.getItemBinList());
 	}
 
 	@Test
@@ -167,21 +169,21 @@ public class VendingMachineTest {
 		ArrayList<String> expectedItemBinList = new ArrayList<String>();
 		expectedItemBinList.add("Candy");
 
-		vendingMachine.candyButton();
+		underTest.candyButton();
 
-		assertEquals(expectedItemBinList, vendingMachine.getItemBinList());
+		assertEquals(expectedItemBinList, underTest.getItemBinList());
 	}
 
 	@Test
 	public void vendingMachineShouldNotVendCandyIfChangeIsInsufficent() {
-		vendingMachine.insert(Coin.QUARTER);
-		vendingMachine.insert(Coin.NICKEL);
+		underTest.insert(Coin.QUARTER);
+		underTest.insert(Coin.NICKEL);
 
 		ArrayList<String> expectedItemBinList = new ArrayList<String>();
 
-		vendingMachine.candyButton();
+		underTest.candyButton();
 
-		assertEquals(expectedItemBinList, vendingMachine.getItemBinList());
+		assertEquals(expectedItemBinList, underTest.getItemBinList());
 	}
 
 	@Test
@@ -189,18 +191,18 @@ public class VendingMachineTest {
 		insertDollarInQuarters();
 		insertDollarInQuarters();
 		insertDollarInQuarters();
-		vendingMachine.insert(Coin.QUARTER);
+		underTest.insert(Coin.QUARTER);
 
 		ArrayList<String> expectedItemBinList = new ArrayList<String>();
 		expectedItemBinList.add("Candy");
 		expectedItemBinList.add("Soda");
 		expectedItemBinList.add("Chips");
 
-		vendingMachine.candyButton();
-		vendingMachine.sodaButton();
-		vendingMachine.chipsButton();
+		underTest.candyButton();
+		underTest.sodaButton();
+		underTest.chipsButton();
 
-		assertEquals(expectedItemBinList, vendingMachine.getItemBinList());
+		assertEquals(expectedItemBinList, underTest.getItemBinList());
 	}
 
 	@Test
@@ -208,10 +210,10 @@ public class VendingMachineTest {
 		insertDollarInQuarters();
 		insertFiftyCentsInQuarters();
 
-		vendingMachine.sodaButton();
-		vendingMachine.returnCoins();
+		underTest.sodaButton();
+		underTest.returnCoins();
 
-		assertEquals(Coin.QUARTER.getValue(), vendingMachine.getCoinReturnAmount());
+		assertEquals(Coin.QUARTER.getValue(), underTest.getCoinReturnAmount());
 	}
 
 	private void insertDollarInQuarters() {
@@ -220,7 +222,35 @@ public class VendingMachineTest {
 	}
 
 	private void insertFiftyCentsInQuarters() {
-		vendingMachine.insert(Coin.QUARTER);
-		vendingMachine.insert(Coin.QUARTER);
+		underTest.insert(Coin.QUARTER);
+		underTest.insert(Coin.QUARTER);
+	}
+	
+	@Test
+	public void shouldCallCurrencyHandlerWhenMoneyIsInserted(){
+		underTest.insert(Coin.QUARTER);
+		assertEquals(Coin.QUARTER, currencyHandlerStub.getCoin());	
+	}
+	
+	public class CurrencyHandlerStub implements CurrencyHandler{
+		Coin coin;
+		Double currentAmount = 0.0;
+		public Coin getCoin() {
+			return coin;
+		}
+		@Override
+		public void insert(Coin coin){
+			this.coin=coin;
+			this.currentAmount = getCurrentAmount() + coin.getValue();
+		}
+		@Override
+		public Double getCurrentAmount() {
+			return this.currentAmount;
+		}
+		@Override
+		public void setCurrentAmount(Double currentAmount) {
+			this.currentAmount = currentAmount;
+		}
+		
 	}
 }
